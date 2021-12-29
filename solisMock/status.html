@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+        .in_body
+        {
+            margin-top:0px;
+            margin-left:0px;
+            margin-right:0px;
+            margin-bottom:0px;
+            background-color:transparent;
+        }
+        .div_c
+        {
+            margin-left:50px;
+            margin-right:50px;
+            margin-top:50px;
+            margin-bottom:50px;
+        }
+        .cu
+        {
+            cursor:pointer;
+        }
+        .b
+        {
+            font-weight:bold;
+        }
+        .lab_5
+        {
+            font-size:16px;
+            color:#666666;
+            margin-left:-20px;
+        }
+        .lab_l2
+        {
+            float:left;
+            width:32%;
+            color:#666666;
+            margin-bottom:-2px;
+            font-size:14px;
+        }
+        .lab_r2
+        {
+            float:left;
+            width:68%;
+            color:#666666;
+            text-align:right;
+            font-size:14px;
+        }
+        .cl
+        {
+            clear:left;
+        }
+        .line
+        {
+            height:1px;
+            background-color:#666666;
+            width:100%;
+            margin-top:5px;
+            margin-bottom:5px;
+        }
+        .sp_5
+        {
+            height:5px;
+            width:500px;
+        }
+        .sp_20
+        {
+            height:20px;
+            width:500px;
+        }
+        .label
+        {
+            float:left;
+            width:50%;
+            color:#666666;
+            margin-bottom:-2px;
+            font-size:14px;
+        }
+        .lab_r
+        {
+            float:left;
+            width:50%;
+            color:#666666;
+            text-align:right;
+            font-size:14px;
+        }
+        .lab_l
+        {
+            float:left;
+            width:40%;
+            color:#666666;
+            margin-bottom:-2px;
+            margin-left:10%;
+            font-size:14px;
+        }
+        .line_l
+        {
+            height:1px;
+            background-color:#666666;
+            width:450px;
+            margin-top:5px;
+            margin-bottom:5px;
+            margin-left:50px;
+        }
+        .sub
+        {
+            display:inline-block;
+            width:16px;
+            text-align:center;
+        }
+    </style>
+    <script type="text/javascript">
+        var height=0;function fileText(id,value){if(document.getElementById(id)){document.getElementById(id).innerHTML=value}}function changeFont(){reCon("main_div").style.fontFamily=window.parent.reFont()}function child_getH(){var nh=document.body.offsetHeight+100;if(nh<500||nh==null){nh=500}if(height!=nh){height=nh;window.parent.child_height(height)}}function reCon(id){return document.getElementById(id)}function ready(){try{window.parent.show_ifr()}catch(e){}child_getH()}function show(v){var c=document.getElementById(v);if(c!=null){c.style.display=""}}function hide(v){var c=document.getElementById(v);if(c!=null){c.style.display="none"}};
+    </script>
+    <script type="text/javascript">
+        var webdata_msvn = "00AD";
+        var webdata_ssvn = "00AB";
+        var webdata_pv_type = "0078";
+        var webdata_rate_p = "";
+        var webdata_now_p = "200";
+        var webdata_today_e = "1.80";
+        var webdata_total_e = "37.0";
+        var webdata_alarm = "";
+        var status_a = "1";
+        var status_b = "0";
+        var status_c = "0";
+
+        function initPageText(){var list=window.parent.reList("status");fileText("st1",list["t1"]);fileText("st2",list["t2"]);fileText("st3",list["t3"]);for(var i=1;i<=27;i++){if(i!=14){fileText("tx"+i,list[i])}}changeFont();child_getH()}function upfold(v){if(document.getElementById("up_"+v+"_div").style.display=="none"){show("up_"+v+"_div");reCon("p_"+v).innerHTML="-"}else{hide("up_"+v+"_div");reCon("p_"+v).innerHTML="+"}}function init_main_page(){var on=window.parent.reTip("1");var off=window.parent.reTip("2");document.getElementById("cover_mid").innerHTML=cover_mid;document.getElementById("cover_ver").innerHTML=cover_ver;document.getElementById("cover_ap_status").innerHTML=off;document.getElementById("cover_sta_status").innerHTML=off;if(cover_wmode!="STA"){document.getElementById("cover_ap_status").innerHTML=on;document.getElementById("cover_ap_ssid").innerHTML=cover_ap_ssid;document.getElementById("cover_ap_ip").innerHTML=cover_ap_ip;document.getElementById("cover_ap_mac").innerHTML=cover_ap_mac}if(cover_wmode!="AP"){document.getElementById("cover_sta_status").innerHTML=on;document.getElementById("cover_sta_ssid").innerHTML=cover_sta_ssid;document.getElementById("cover_sta_rssi").innerHTML=cover_sta_rssi;document.getElementById("cover_sta_ip").innerHTML=cover_sta_ip;document.getElementById("cover_sta_mac").innerHTML=cover_sta_mac}if(webdata_sn==""){webdata_sn="---"}fileText("webdata_sn",webdata_sn);if(webdata_msvn==""){webdata_msvn="---"}fileText("webdata_msvn",webdata_msvn);if(webdata_ssvn==""){webdata_ssvn="---"}fileText("webdata_ssvn",webdata_ssvn);if(webdata_pv_type==""){webdata_pv_type="---"}fileText("webdata_pv_type",webdata_pv_type);if(webdata_rate_p==""){webdata_rate_p="---"}fileText("webdata_rate_p",webdata_rate_p+" W");if(webdata_now_p==""||webdata_now_p==0){webdata_now_p="---"}fileText("webdata_now_p",webdata_now_p+" W");if(webdata_today_e==""){webdata_today_e="---"}fileText("webdata_today_e",webdata_today_e+" kWh");if(webdata_total_e==""){webdata_total_e="---"}fileText("webdata_total_e",webdata_total_e+" kWh");if(webdata_alarm==""){webdata_alarm="---"}fileText("webdata_alarm",webdata_alarm);if(webdata_utime==""){if(document.getElementById("webdata_sn").innerHTML=="---"){webdata_utime="---"}else{webdata_utime=value+window.parent.reTip("5")}}fileText("webdata_utime",webdata_utime);var st_en=window.parent.reTip("3");var st_dis=window.parent.reTip("4");var st_un=window.parent.reTip("41");if(status_a=="1"){document.getElementById("cover_remote_status_a").innerHTML=st_en}else{if(status_a=="0"){document.getElementById("cover_remote_status_a").innerHTML=st_dis}else{document.getElementById("cover_remote_status_a").innerHTML=st_un}}if(status_b=="1"){document.getElementById("cover_remote_status_b").innerHTML=st_en}else{if(status_b=="0"){document.getElementById("cover_remote_status_b").innerHTML=st_dis}else{document.getElementById("cover_remote_status_b").innerHTML=st_un}}};
+
+    </script>
+</head>
+<body class="in_body" onload="init_main_page();">
+<div class="div_c" id="main_div">
+    <div class="lab_5 cu b" onclick="upfold(1);child_getH();"><span class="sub" id="p_1">-</span><span id="st1" style="margin-left:3px"></span></div>
+    <div class="sp_5"></div>
+    <div id="up_1_div">
+        <div class="lab_l2" id="tx1"></div>
+        <div class="lab_r2" id="webdata_sn"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" id="tx2"></div>
+        <div class="lab_r2" id="webdata_msvn"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" id="tx3"></div>
+        <div class="lab_r2" id="webdata_ssvn"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" id="tx4"></div>
+        <div class="lab_r2" id="webdata_pv_type"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" id="tx5"></div>
+        <div class="lab_r2" id="webdata_rate_p"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" style="color:#666666;font-weight:bold;" id="tx6"></div>
+        <div class="lab_r2" id="webdata_now_p" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" style="color:#666666;font-weight:bold;" id="tx7"></div>
+        <div class="lab_r2" id="webdata_today_e" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" style="color:#666666;font-weight:bold;" id="tx8"></div>
+        <div class="lab_r2" id="webdata_total_e" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" style="color:#666666;font-weight:bold;" id="tx9"></div>
+        <div class="lab_r2" id="webdata_alarm" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l2" style="color:#666666;font-weight:bold;" id="tx10"></div>
+        <div class="lab_r2" id="webdata_utime" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+    </div>
+    <div class="sp_20"></div>
+    <div class="lab_5 cu b" onclick="upfold(2);child_getH();"><span class="sub" id="p_2">+</span><span id="st2" style="margin-left:3px"></span></div>
+    <div class="sp_5"></div>
+    <div id="up_2_div" style="display:none">
+        <div class="label" id="tx11"></div>
+        <div class="lab_r" id="cover_mid"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="label" id="tx12"></div>
+        <div class="lab_r" id="cover_ver"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="label" id="tx13"></div>
+        <div class="lab_r" id="cover_ap_status" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l" id="ap_ssid">SSID</div>
+        <div class="lab_r" id="cover_ap_ssid"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+        <div class="lab_l" id="tx15"></div>
+        <div class="lab_r" id="cover_ap_ip"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+        <div class="lab_l" id="tx16"></div>
+        <div class="lab_r" id="cover_ap_mac"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+        <div class="label" id="tx17"></div>
+        <div class="lab_r" id="cover_sta_status" style="color:#666666;font-weight:bold;"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="lab_l" id="tx18"></div>
+        <div class="lab_r" id="cover_sta_ssid"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+        <div class="lab_l" id="tx19"></div>
+        <div class="lab_r" id="cover_sta_rssi"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+        <div class="lab_l" id="tx20"></div>
+        <div class="lab_r" id="cover_sta_ip"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+        <div class="lab_l" id="tx21"></div>
+        <div class="lab_r" id="cover_sta_mac"></div>
+        <div class="cl"></div>
+        <div class="line_l"></div>
+    </div>
+
+    <div class="sp_20"></div>
+    <div class="lab_5 cu b" onclick="upfold(3);child_getH();"><span class="sub" id="p_3">+</span><span id="st3" style="margin-left:3px"></span></div>
+    <div class="sp_5"></div>
+    <div id="up_3_div" style="display:none">
+        <div class="label" id="tx25"></div>
+        <div class="lab_r" id="cover_remote_status_a"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+        <div class="label" id="tx26"></div>
+        <div class="lab_r" id="cover_remote_status_b"></div>
+        <div class="cl"></div>
+        <div class="line"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    initPageText();
+    ready();
+</script>
+</body>
+</html>
