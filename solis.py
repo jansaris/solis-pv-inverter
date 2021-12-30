@@ -42,21 +42,23 @@ class Solis:
 class SolisModel:
     @classmethod
     def unreachable(cls):
-        return cls("Host unreachable", 0, 0, 0)
+        return cls("Host unreachable", False, True, 0, 0, 0)
     
     @classmethod
     def create(cls, power, today, total):
-        return cls("OK", power, today, total)
+        return cls("OK", True, False, power, today, total)
 
     @classmethod
     def connectionError(cls):
-        return cls("Connection error", 0, 0, 0)
+        return cls("Connection error", False, True, 0, 0, 0)
 
     @classmethod
     def httpError(cls, statusCode):
-        return cls(statusCode, 0, 0, 0)
+        return cls(statusCode, True, True, 0, 0, 0)
 
-    def __init__(self, status, power, today, total):
+    def __init__(self, status, reachable, error, power, today, total):
+        self.reachable = reachable
+        self.error = error
         self.current_power = power
         self.current_power_kw = float(power) / 1000
         self.yield_tody = today
