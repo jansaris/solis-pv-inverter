@@ -1,5 +1,6 @@
-"""Solis PV Converter integration API."""
+"""Solis PV Inverter integration API."""
 import asyncio
+import json
 import logging
 import re
 
@@ -9,20 +10,21 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class Solis:
-    """Solis PV Converter integration API."""
+    """Solis PV Inverter integration API."""
 
     POWER_REGEX = re.compile(r'var webdata_now_p = "(\d+(\.\d+)*)"')
     TODAY_REGEX = re.compile(r'var webdata_today_e = "(\d+(\.\d+)*)"')
     TOTAL_REGEX = re.compile(r'var webdata_total_e = "(\d+(\.\d+)*)"')
 
     def __init__(self, url, username, password):
-        """Initialize Solis PV Converter integration."""
+        """Initialize Solis PV Inverter integration."""
         self._url = f"{url}/status.html"
         self._username = username
         self._password = password
+        self._model = SolisModel.empty_model()
 
     async def retrieve(self):
-        """Retrieve the model from the Solis PV internal website."""
+        """Retrieve the model from the Solis PV Inverter internal website."""
         _LOGGER.debug("Retrieve data from %s", self._url)
         async with aiohttp.ClientSession(
             auth=aiohttp.BasicAuth(self._username, self._password)
@@ -32,16 +34,24 @@ class Solis:
                     self._url, timeout=aiohttp.ClientTimeout(total=5)
                 ) as response:
                     if not response.ok:
-                        return SolisModel.http_error(
+                        self._model = SolisModel.http_error(
                             response.status,
                             f"http-{response.status}: {response.reason}",
                         )
                     html = await response.text()
-                    return Solis._extract_model(html)
+                    self._model = Solis._extract_model(html)
             except asyncio.TimeoutError:
-                return SolisModel.unreachable()
+                self._model = SolisModel.unreachable()
             except aiohttp.ClientConnectionError:
-                return SolisModel.connection_error()
+                self._model = SolisModel.connection_error()
+        _LOGGER.debug(
+            "Retrieved from %s: %s", self._url, json.dumps(self._model.__dict__)
+        )
+        return self._model
+
+    def get_value(self, key):
+        """Retrieve the requested value from the latest model or default to 0."""
+        return getattr(self._model, key, 0)
 
     @staticmethod
     def _extract_model(html):
@@ -62,6 +72,11 @@ class Solis:
 
 class SolisModel:
     """Solis PV Converter integration Model."""
+
+    @classmethod
+    def empty_model(cls):
+        """Create an error model with the http status code."""
+        return cls("Empty", 0, False, True, 0, 0, 0)
 
     @classmethod
     def unreachable(cls):
