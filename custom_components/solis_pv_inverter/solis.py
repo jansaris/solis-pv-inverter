@@ -21,6 +21,7 @@ class Solis:
         self._url = f"{url}/status.html"
         self._username = username
         self._password = password
+        _LOGGER.debug("Initialize an empty model")
         self._model = SolisModel.empty_model()
 
     async def retrieve(self):
@@ -102,9 +103,10 @@ class SolisModel:
         """Initialize Solis Model."""
         self.reachable = reachable
         self.error = error
-        self.current_power = power
+        self.current_power = int(power)
         self.current_power_kw = float(power) / 1000
-        self.yield_tody = today
-        self.yield_total = total
+        self.yield_tody = float(today)
+        self.yield_total = float(total)
         self.http_code = http_code
         self.status = status
+        self.available = reachable and not error

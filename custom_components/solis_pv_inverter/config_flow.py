@@ -8,7 +8,6 @@ import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PASSWORD, CONF_USERNAME
-from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 
@@ -26,24 +25,6 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 )
 
 
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
-    """Validate the user input allows us to connect.
-
-    Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
-    """
-    hub = Solis(data[CONF_HOST], data[CONF_USERNAME], data[CONF_PASSWORD])
-    result = await hub.retrieve()
-
-    if not result.reachable:
-        raise CannotConnect(result.status)
-
-    if result.http_code == 401:
-        raise InvalidAuth
-
-    if result.error:
-        raise CannotConnect(result.status)
-
-
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Solis PV Inverter."""
 
@@ -53,6 +34,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle the initial step."""
+        _LOGGER.debug("Start config flow")
         if user_input is None:
             return self.async_show_form(
                 step_id="user", data_schema=STEP_USER_DATA_SCHEMA
@@ -61,7 +43,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         try:
-            await validate_input(self.hass, user_input)
+            await ConfigFlow.validate_input(user_input)
             user_input[CONF_NAME] = "Solis PV Inverter"
         except CannotConnect:
             errors["base"] = "cannot_connect"
@@ -70,12 +52,39 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         except Exception:  # pylint: disable=broad-except
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
-        else:
-            return self.async_create_entry(title=user_input[CONF_NAME], data=user_input)
+        if user_input is None or errors:
+            return self.async_show_form(
+                step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
+            )
 
-        return self.async_show_form(
-            step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
-        )
+        return self.async_create_entry(title=user_input[CONF_NAME], data=user_input)
+
+    @staticmethod
+    async def validate_input(data: dict[str, Any]):
+        """Validate the user input allows us to connect.
+
+        Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
+        """
+        _LOGGER.debug("Start validating user input")
+        hub = Solis(data[CONF_HOST], data[CONF_USERNAME], data[CONF_PASSWORD])
+        result = await hub.retrieve()
+
+        if not result.reachable:
+            _LOGGER.debug("Form invalid because Solis PV Inverter not reachable")
+            raise CannotConnect(result.status)
+
+        if result.http_code == 401:
+            _LOGGER.debug(
+                "Form invalid because Solis PV Inverter credentials are not ok"
+            )
+            raise InvalidAuth
+
+        if result.error:
+            _LOGGER.debug(
+                "Form invalid because Solis PV Inverter returned an error: %s",
+                result.status,
+            )
+            raise CannotConnect(result.status)
 
 
 class CannotConnect(HomeAssistantError):

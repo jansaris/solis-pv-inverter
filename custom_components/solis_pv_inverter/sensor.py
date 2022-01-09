@@ -1,5 +1,4 @@
 """Read status of Solis PV Inverter."""
-from datetime import timedelta
 import logging
 
 from homeassistant.components.sensor import (
@@ -19,11 +18,9 @@ from homeassistant.const import (
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.util import Throttle
 
-from .const import DOMAIN
+from .const import DOMAIN, SCAN_INTERVAL
 from .models import SolisSensorEntityDescription
 from .solis import Solis
-
-SCAN_INTERVAL = timedelta(seconds=30)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,7 +46,7 @@ SENSOR_TYPES = [
     ),
     SolisSensorEntityDescription(
         key="current_power",
-        api_key="current_power_kw",
+        api_key="current_power",
         name="Current Power",
         icon="mdi:solar-power",
         state_class=SensorStateClass.MEASUREMENT,
@@ -57,9 +54,9 @@ SENSOR_TYPES = [
         device_class=SensorDeviceClass.POWER,
     ),
     SolisSensorEntityDescription(
-        key="current_power_kwh",
-        api_key="current_power",
-        name="Current Power kWh",
+        key="current_power_kw",
+        api_key="current_power_kw",
+        name="Current Power kW",
         icon="mdi:solar-power",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=POWER_KILO_WATT,
@@ -116,7 +113,7 @@ class SolisInverterEntity(SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return self.api.get_value(self.entity_description.key)
+        return self.api.get_value(self.entity_description.api_key)
 
     @Throttle(SCAN_INTERVAL)
     async def async_update(self):
@@ -126,4 +123,4 @@ class SolisInverterEntity(SensorEntity):
             self.entity_description.name,
         )
         model = await self.api.retrieve()
-        self._attr_available = model.reachable and not model.error
+        self._attr_available = model.available
